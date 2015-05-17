@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+  <head>
+    <title>WebSocket Tic Tac Toe</title>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <style>
+      td {
+        border: 1px black solid;
+        height: 50px;
+        width: 50px;
+        text-align: center;
+      }
+    </style>
+
+  </head>
+  <body>
+    <table id="gametable">
+      <tr class='row-1'>
+        <td class='cell-1'></td>
+        <td class='cell-2'></td>
+        <td class='cell-3'></td>
+      </tr>
+      <tr class='row-2'>
+        <td class='cell-1'></td>
+        <td class='cell-2'></td>
+        <td class='cell-3'></td>
+      </tr>
+      <tr class='row-3'>
+        <td class='cell-1'></td>
+        <td class='cell-2'></td>
+        <td class='cell-3'></td>
+      </tr>
+    </table>
+    <script>
+      var socket = io();
+      var clicked = false;
+
+      $('td').click(function() {
+        var el = $(this);
+
+        if (!el.text() && !clicked) {
+          el.text('X');
+          clicked = true;
+        } else {
+          // returning because that location has already been clicked
+          return;
+        }
+
+        var cellNum = el.attr('class').split('-')[1];
+        var rowNum = el.parent().attr('class').split('-')[1];
+        var emitString = cellNum + ':' + rowNum;
+
+        socket.emit('click', emitString);
+        return false;
+      });
+
+      socket.on('click', function(msg) {
+        var cellNum = msg.split(':')[0];
+        var rowNum = msg.split(':')[1];
+        var el = $('.row-' + rowNum + ' > .cell-' + cellNum);
+        if (!el.text()) {
+          el.text('O');
+          clicked = false;
+        }
+      });
+    </script>
+  </body>
+</html>
