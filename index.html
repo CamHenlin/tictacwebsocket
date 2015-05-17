@@ -16,20 +16,21 @@
   </head>
   <body>
     <table id="gametable">
-      <tr class='row-1'>
+      <div id="my_id"></div>
+      <tr class='row-0'>
+        <td class='cell-0'></td>
         <td class='cell-1'></td>
         <td class='cell-2'></td>
-        <td class='cell-3'></td>
+      </tr>
+      <tr class='row-1'>
+        <td class='cell-0'></td>
+        <td class='cell-1'></td>
+        <td class='cell-2'></td>
       </tr>
       <tr class='row-2'>
+        <td class='cell-0'></td>
         <td class='cell-1'></td>
         <td class='cell-2'></td>
-        <td class='cell-3'></td>
-      </tr>
-      <tr class='row-3'>
-        <td class='cell-1'></td>
-        <td class='cell-2'></td>
-        <td class='cell-3'></td>
       </tr>
     </table>
     <script>
@@ -63,6 +64,23 @@
           el.text('O');
           clicked = false;
         }
+      });
+
+      socket.on('id', function(id) {
+        if ($('#my_id').text()) {
+          return;
+        }
+
+        $('#my_id').text(id);
+      });
+
+      socket.on('victory', function(victor) {
+        if (victor === $('#my_id').text()) {
+          alert('you win!');
+          return;
+        }
+
+        alert('you lose!');
       });
     </script>
   </body>
