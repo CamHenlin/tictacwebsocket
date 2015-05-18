@@ -20,7 +20,7 @@ function checkVictory(msg, id) {
 }
 
 app.get('/', function(req, res) {
-  res.sendFile(__dirname + '/index.html');
+  res.sendfile(__dirname + '/index.html');
 });
 
 
